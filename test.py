@@ -30,7 +30,17 @@ class TestTuneFile(unittest.TestCase):
 			self.test_tunefile = f.readlines()
 		self.tunefile.parse(self.test_tunefile)
 		
-	def test_line_one( self ):
-		self.assertEqual(self.tunefile.elements[0].element.note, "A")
+	def test_info_fields( self ):
+		self.assertEqual(self.tunefile.elements[0].element.fields['X'], "0")
+		self.assertEqual(self.tunefile.elements[0].element.fields['T'], "Test Tune")
+		self.assertEqual(self.tunefile.elements[0].element.fields['M'], "3/4")
+		self.assertEqual(self.tunefile.elements[0].element.fields['L'], "1/8")
+		self.assertEqual(self.tunefile.elements[0].element.fields['C'], "A. Composer")
+		self.assertEqual(self.tunefile.elements[0].element.fields['R'], "Reel")
+		self.assertEqual(self.tunefile.elements[0].element.fields['S'], "A book")
+		self.assertEqual(self.tunefile.elements[0].element.fields['I'], "This is an information field that can be printed with the tune")
+		
+	def test_note_fields(self):
+		self.assertEqual(self.tunefile.elements[1].element.note, "hello")
 	
 unittest.main()

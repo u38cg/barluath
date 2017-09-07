@@ -1,4 +1,10 @@
 X:0
 T:Test Tune
+M:3/4
+L:1/8
+C:A. Composer
+R: Reel
+S:A book
+I:This is an information field that can be printed with the tune
 H A B C D E F G I
 aH bH cH dH eH fH gH iH

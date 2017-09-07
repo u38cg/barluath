@@ -1,4 +1,5 @@
 from error import *
+import re
 
 class TuneFile:
 	
@@ -33,23 +34,33 @@ class Element:
 	def parse( self, text):
 		
 		if self.element is None:
-			#decide what it (text) is
-			#set element to instance of that type
-		
+			# Match X(ref), Title, Composer, Rhythm, Source, Info, Meter, Length (note default) information fields
+			r = r'[XTMLCRSI]:.*' 
+			match = re.match(r, text)
+			if match:
+				self.element = InfoField()
+			else:
+				self.element = Note()
+			
 		self.element.parse(text)
-		
-		
-		################
-		self.element=Note()
-		self.element.parse(text)
-		self.complete = True
 		
 	def new_element(self, text):
 		"""
 		Decide if the given text is a new element or a continuation of the one we already have.
 		"""
-		return True
+		if text == "H A B C D E F G I\n":
+			return True
+		else:
+			return False	
 		
+class InfoField:
+	def __init__(self):
+		self.fields = {}
+		
+	def parse(self, text):
+		r = r'([XTMLCRSI]):\s*(.*)'
+		match = re.match(r, text)
+		self.fields[match.group(1)] = match.group(2)
 		
 class Note:
 	
