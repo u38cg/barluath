@@ -31,5 +31,7 @@ NB command fields can occur inside a music line.
 
 Text - any free text not identified as above is a text block. 
 
+#Info & acknowledgements
 
+Icons are taken (with thanks) from http://publicicons.org/
 

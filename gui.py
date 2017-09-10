@@ -29,9 +29,9 @@ class MainWindow(wx.Frame):
 	
 app = wx.App(False)
 frame = MainWindow(None, title="Barluath")
-# Toolbar
-		
-toolbar = frame.CreateToolBar(name="Toolbah")
+
+# Toolbar	
+toolbar = frame.CreateToolBar(name="Toolbar")
 toolbar.AddTool(-1, label="", bitmap=wx.Bitmap(wx.Image("includes/Folder.png").Rescale(32,32)), shortHelp="Open a new file")
 toolbar.AddTool(-1, label="", bitmap=wx.Bitmap(wx.Image("includes/File.png").Rescale(32,32)), shortHelp="Save as PDF")
 toolbar.AddTool(-1, label="", bitmap=wx.Bitmap(wx.Image("includes/Cursor.png").Rescale(32,32)), shortHelp="Open editor")
@@ -39,11 +39,11 @@ toolbar.AddTool(-1, label="", bitmap=wx.Bitmap(wx.Image("includes/Book.png").Res
 toolbar.AddStretchableSpace()
 toolbar.AddTool(-1, label="", bitmap=wx.Bitmap(wx.Image("includes/Gear.png").Rescale(32,32)), shortHelp="Settings")
 toolbar.AddTool(-1, label="", bitmap=wx.Bitmap(wx.Image("includes/Bang.png").Rescale(32,32)), shortHelp="Help & About")
-
-
 toolbar.Realize()
+
 welcome_html_file = open("includes/welcome.html")
 welcome_html = welcome_html_file.read()
 welcome_html_file.close()
 frame.control.SetPage(html=welcome_html, baseUrl="")
+
 app.MainLoop()
