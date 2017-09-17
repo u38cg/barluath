@@ -8,29 +8,14 @@ The GUI (written in wxPython) will display SVGs and export PDFs.
 
 Roadmap:
 
-1. write a very basic parser
-2. Build GUI
+1. write a very basic parser - a simple, incomplete parser has been written
+2. Build GUI - a skeleton has been produced
 3. Typesetter
 4. PDF export
 5. ????
 6. Profit
 
 The code is not at present licensed until any requirements from included libraries become clear, though the intent is that it will be GPL or similar.
-
-#Initial parser wishlist:
-
-Info fields: 
-XTMLCRSI - X(ref), Title, Composer, Rhythm, Source, Info, Meter, Length (note default)
-
-Music
-notes, gracenotes, barlines, music lines.  Leave duration until later.
-
-Comment fields (ie do nothing) - use '>'
-
-Command fields (eg scale, etc) - use '%'
-NB command fields can occur inside a music line.
-
-Text - any free text not identified as above is a text block. 
 
 #Info & acknowledgements
 
