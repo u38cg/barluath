@@ -10,9 +10,10 @@ Roadmap:
 
 1. write a very basic parser
 2. Build GUI
-3. PDF export
-4. ????
-5. Profit
+3. Typesetter
+4. PDF export
+5. ????
+6. Profit
 
 The code is not at present licensed until any requirements from included libraries become clear, though the intent is that it will be GPL or similar.
 

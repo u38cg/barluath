@@ -1,71 +1,51 @@
-from error import *
-import re
+#! /usr/bin/env python3
 
-class TuneFile:
-	
-	def __init__(self):
-		"""
-		A complete file, with tunes and other elements to typeset
-		
-		elements: a single chunk, such as format info, a tune, text, or something else.
-		"""
-		self.elements = [] 
-	
-	def parse(self, filelines):
-		"""
-		Accepts a list of text lines, which make up the input tune file, then parses the list.
-		"""
-		
-		if len(filelines)<3:
-			raise TuneFileError("File too short: 3 line minimum")
-		
-		element = Element()
-		
-		for line in filelines:
-			if element.new_element(line):
-				self.elements.append(element)
-				element = Element()
-			element.parse(line)
-			
-class Element:
-	def __init__( self ):
-		self.element = None # A generic element
-	
-	def parse( self, text):
-		
-		if self.element is None:
-			# Match X(ref), Title, Composer, Rhythm, Source, Info, Meter, Length (note default) information fields
-			r = r'[XTMLCRSI]:.*' 
-			match = re.match(r, text)
-			if match:
-				self.element = InfoField()
-			else:
-				self.element = Note()
-			
-		self.element.parse(text)
-		
-	def new_element(self, text):
-		"""
-		Decide if the given text is a new element or a continuation of the one we already have.
-		"""
-		if text == "H A B C D E F G I\n":
-			return True
-		else:
-			return False	
-		
-class InfoField:
-	def __init__(self):
-		self.fields = {}
-		
-	def parse(self, text):
-		r = r'([XTMLCRSI]):\s*(.*)'
-		match = re.match(r, text)
-		self.fields[match.group(1)] = match.group(2)
-		
-class Note:
-	
-	def __init__( self ):
-		self.note = None
-		
-	def parse(self, text):
-		self.note = text
+import pyparsing as pp
+
+# The pyparsing format "bottom up" - so scroll down for the overall definition of the tune file structure and work up from there.  
+
+comment = "#" + pp.restOfLine
+
+duration = pp.Optional(pp.Word(pp.nums)) + pp.Optional("/") + pp.Optional(pp.Word(pp.nums))
+note_base= pp.Word("HABCDEFGI", exact=1)
+gracenotes = pp.OneOrMore(pp.Word("habcdefgi"))
+
+dotcut = pp.Literal(">") | pp.Literal("<")
+note = pp.Optional(gracenotes) + note_base + pp.Optional(duration)
+barline = pp.Literal("|")
+
+music_element = note | barline | dotcut
+
+line = pp.OneOrMore(music_element) + pp.Optional(comment) + pp.LineEnd()
+
+tune_type ="R:" + pp.restOfLine
+note_length ="L:" + pp.restOfLine
+meter ="M:" + pp.restOfLine
+tempo ="Q:" + pp.restOfLine
+composer = "C:" + pp.restOfLine
+
+title = "T:" + pp.restOfLine 
+tune_data = 	(pp.Optional(composer) & 
+				pp.Optional(tune_type) & 
+				pp.Optional(note_length) &
+				pp.Optional(meter) &
+				pp.Optional(tempo)
+				)
+
+music = pp.OneOrMore(pp.Group(line))
+header = title + tune_data
+
+textblock = pp.Literal("example text")
+
+command = "%" + pp.restOfLine
+tune = header + music
+
+tunefile = ( 
+			pp.OneOrMore(pp.Group(tune("tune"))) & 
+			pp.ZeroOrMore(comment) & 
+			pp.ZeroOrMore(command) &
+			pp.ZeroOrMore(textblock) &
+			pp.StringEnd() )
+
+
+
