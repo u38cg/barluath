@@ -43,6 +43,9 @@ class MainWindow(wx.Frame):
 		
 		self.Show(True)
 		
+		#Initialise engraver
+		self.engraver = engraver.Engraver()
+		
 	def FileOpen(self, event):
 		dialog = wx.FileDialog(self, "Choose a file")
 		if dialog.ShowModal() == wx.ID_OK:
@@ -53,8 +56,8 @@ class MainWindow(wx.Frame):
 	
 	def Engrave(self, file_contents):
 		parse_result = parser.tunefile.parseString(file_contents)
-		e = engraver.Engraver( parse_result )
-		self.html_area.SetPage(html=e.html, baseUrl="")
+		self.engraver.SetTuneFile( parse_result )
+		self.html_area.SetPage(html=self.engraver.html, baseUrl="")
 		
 app = wx.App(False)
 frame = MainWindow(None, title="Barluath")

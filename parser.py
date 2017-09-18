@@ -16,7 +16,7 @@ barline = pp.Literal("|")
 
 music_element = note | barline | dotcut
 
-line = pp.OneOrMore(music_element) + pp.Optional(comment) + pp.LineEnd()
+line = pp.OneOrMore(music_element) + pp.Optional(comment) ^ pp.LineEnd()
 
 tune_type ="R:" + pp.restOfLine
 note_length ="L:" + pp.restOfLine
