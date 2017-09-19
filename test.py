@@ -24,6 +24,7 @@ A #This line finishes with a comment
 """
 
 parse_result = parser.tunefile.parseString(f)
-print(parse_result.dump())
 
+for i in range(0,len(parse_result)):
+	print (list(parse_result[i].asDict())[0])
 

@@ -42,9 +42,9 @@ tune = header + music
 
 tunefile = ( 
 			pp.OneOrMore(pp.Group(tune("tune"))) & 
-			pp.ZeroOrMore(comment) & 
-			pp.ZeroOrMore(command) &
-			pp.ZeroOrMore(textblock) &
+			pp.ZeroOrMore(pp.Group(comment("comment"))) & 
+			pp.ZeroOrMore(pp.Group(command("command"))) &
+			pp.ZeroOrMore(pp.Group(textblock("textblock"))) &
 			pp.StringEnd() )
 
 
