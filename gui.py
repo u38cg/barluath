@@ -11,6 +11,8 @@ import engraver
 class MainWindow(wx.Frame):
 	def __init__(self, parent, title):
 		
+		debug = True
+		
 		#Size at startup
 		t=wx.Display()
 		s = t.GetClientArea().GetSize()
@@ -32,13 +34,16 @@ class MainWindow(wx.Frame):
 		toolbar.AddTool(-1, label="", bitmap=wx.Bitmap(wx.Image("includes/Cursor.png").Rescale(32,32)), shortHelp="Open editor")
 		toolbar.AddTool(-1, label="", bitmap=wx.Bitmap(wx.Image("includes/Book.png").Rescale(32,32)), shortHelp="Tunebook options")
 		toolbar.AddStretchableSpace()
+		if debug:
+			tb_dump = toolbar.AddTool(-1, label="dump", bitmap=wx.Bitmap(wx.Image("includes/Bang.png").Rescale(32,32)), shortHelp="Dump parse tree")
 		toolbar.AddTool(-1, label="", bitmap=wx.Bitmap(wx.Image("includes/Gear.png").Rescale(32,32)), shortHelp="Settings")
 		toolbar.AddTool(-1, label="", bitmap=wx.Bitmap(wx.Image("includes/Bang.png").Rescale(32,32)), shortHelp="Help & About")
 		toolbar.Realize()
 		
 		#Toolbar bindings
 		self.Bind(wx.EVT_TOOL, self.FileOpen, tb_open)
-   
+		if debug:
+			self.Bind(wx.EVT_TOOL, self.Dump, tb_dump)
 		self.Centre()
 		
 		self.Show(True)
@@ -58,6 +63,9 @@ class MainWindow(wx.Frame):
 		parse_result = parser.tunefile.parseString(file_contents)
 		self.engraver.SetTuneFile( parse_result )
 		self.html_area.SetPage(html=self.engraver.html, baseUrl="")
+		
+	def Dump(self, event):
+		print(self.engraver.tunefile.dump())
 		
 app = wx.App(False)
 frame = MainWindow(None, title="Barluath")

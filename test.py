@@ -1,5 +1,7 @@
 #! /usr/bin/env python3
 
+#This file is just for scratch testing.  
+
 import parser
 
 f = """

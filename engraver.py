@@ -27,13 +27,16 @@ class Engraver:
 						<body>"""
 		self.postamble=	"""
 						</body></html>"""
+		self.tunefile = None
 		
 		
 	def SetTuneFile(self,  tunefile):
+		self.tunefile = tunefile
 		if tunefile is not None:
 			self.html = 	(self.preamble + 
 							"<div class=\"content-page\"><pre>")
 			for i in range(0,len(tunefile)):
 				block_type = list(tunefile[i].asDict())[0]
 				self.html = self.html + block_type + "\n"
+			self.html =	self.html + tunefile.dump()
 			self.html = self.html + "</pre></div>" + self.postamble
